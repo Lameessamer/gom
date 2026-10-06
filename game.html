@@ -1,1743 +1,1261 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>مسابقة المعادن والأنظمة البلورية</title>
-
-<style>
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Tahoma, Arial, sans-serif;
-}
-
-body {
-    min-height: 100vh;
-
-    background:
-        linear-gradient(
-            135deg,
-            #1e3c72,
-            #2a5298
-        );
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 20px;
-}
-
-.game-container {
-    width: 100%;
-    max-width: 800px;
-
-    background: white;
-
-    border-radius: 20px;
-
-    box-shadow:
-        0 15px 40px rgba(0,0,0,0.25);
-
-    overflow: hidden;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-.header {
-    background: #163b68;
-
-    color: white;
-
-    padding: 25px;
-
-    text-align: center;
-}
-
-.header h1 {
-    font-size: 27px;
-    margin-bottom: 8px;
-}
-
-.header p {
-    font-size: 15px;
-    opacity: 0.9;
-}
-
-/* =========================
-   START SCREEN
-========================= */
-
-.start-screen {
-    padding: 45px 35px;
-    text-align: center;
-}
-
-.start-screen h2 {
-    color: #163b68;
-
-    margin-bottom: 15px;
-
-    font-size: 25px;
-}
-
-.start-screen p {
-    color: #666;
-
-    margin-bottom: 25px;
-
-    line-height: 1.8;
-}
-
-.name-input {
-    width: 100%;
-
-    max-width: 400px;
-
-    padding: 15px;
-
-    border: 2px solid #ddd;
-
-    border-radius: 10px;
-
-    font-size: 17px;
-
-    text-align: center;
-
-    margin-bottom: 20px;
-
-    outline: none;
-}
-
-.name-input:focus {
-    border-color: #2a5298;
-}
-
-/* =========================
-   BUTTON
-========================= */
-
-.btn {
-    border: none;
-
-    background: #2a5298;
-
-    color: white;
-
-    padding: 14px 35px;
-
-    border-radius: 10px;
-
-    font-size: 17px;
-
-    cursor: pointer;
-
-    transition: 0.3s;
-}
-
-.btn:hover {
-    background: #163b68;
-
-    transform:
-        translateY(-2px);
-}
-
-/* =========================
-   QUIZ
-========================= */
-
-.quiz-screen {
-    display: none;
-
-    padding: 30px;
-}
-
-.quiz-top {
-    display: flex;
-
-    justify-content:
-        space-between;
-
-    align-items: center;
-
-    margin-bottom: 20px;
-
-    color: #555;
-
-    font-weight: bold;
-
-    gap: 10px;
-}
-
-.timer {
-    background: #f1f1f1;
-
-    padding: 8px 15px;
-
-    border-radius: 20px;
-
-    color: #d9534f;
-}
-
-.progress-container {
-    width: 100%;
-
-    height: 10px;
-
-    background: #eee;
-
-    border-radius: 10px;
-
-    overflow: hidden;
-
-    margin-bottom: 30px;
-}
-
-.progress-bar {
-    height: 100%;
-
-    width: 0%;
-
-    background: #2a5298;
-
-    transition:
-        width 0.4s ease;
-}
-
-/* =========================
-   QUESTION
-========================= */
-
-.question {
-    background: #f7f9fc;
-
-    padding: 25px;
-
-    border-radius: 15px;
-
-    margin-bottom: 25px;
-
-    text-align: center;
-
-    color: #222;
-
-    font-size: 21px;
-
-    line-height: 1.7;
-
-    border-right:
-        5px solid #2a5298;
-}
-
-/* =========================
-   ANSWERS
-========================= */
-
-.answers {
-    display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap: 15px;
-}
-
-.answer {
-    padding: 17px;
-
-    border:
-        2px solid #ddd;
-
-    background: white;
-
-    border-radius: 12px;
-
-    cursor: pointer;
-
-    font-size: 17px;
-
-    transition: 0.25s;
-
-    text-align: center;
-
-    min-height: 60px;
-}
-
-.answer:hover {
-    border-color: #2a5298;
-
-    background: #f1f6ff;
-}
-
-/* Correct answer */
-
-.answer.correct {
-    background: #d4edda;
-
-    border-color: #28a745;
-
-    color: #155724;
-
-    font-weight: bold;
-}
-
-/* Wrong answer */
-
-.answer.wrong {
-    background: #f8d7da;
-
-    border-color: #dc3545;
-
-    color: #721c24;
-
-    font-weight: bold;
-}
-
-/* Disable answer */
-
-.answer.disabled {
-    pointer-events: none;
-}
-
-/* =========================
-   NEXT
-========================= */
-
-.next-container {
-    text-align: center;
-
-    margin-top: 25px;
-}
-
-.next-btn {
-    display: none;
-}
-
-/* =========================
-   RESULT
-========================= */
-
-.result-screen {
-    display: none;
-
-    padding: 45px 30px;
-
-    text-align: center;
-}
-
-.result-icon {
-    font-size: 65px;
-
-    margin-bottom: 15px;
-}
-
-.result-screen h2 {
-    color: #163b68;
-
-    font-size: 28px;
-
-    margin-bottom: 15px;
-}
-
-.score {
-    font-size: 50px;
-
-    font-weight: bold;
-
-    color: #2a5298;
-
-    margin: 20px 0;
-}
-
-.result-details {
-    background: #f7f9fc;
-
-    padding: 20px;
-
-    border-radius: 15px;
-
-    margin: 20px auto;
-
-    max-width: 400px;
-
-    line-height: 2;
-
-    font-size: 17px;
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 600px) {
-
-    .header h1 {
-        font-size: 22px;
-    }
-
-    .quiz-screen {
-        padding: 20px;
-    }
-
-    .question {
-        font-size: 19px;
-    }
-
-    .answers {
-        grid-template-columns:
-            1fr;
-    }
-
-    .quiz-top {
-        font-size: 14px;
-    }
-
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>مسابقة المعادن والأنظمة البلورية</title>
+
+    <style>
+        /* =========================
+           GENERAL
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Tahoma", "Arial", sans-serif;
+            background: linear-gradient(135deg, #eaf2f8, #f8fbfd);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .game-container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            background: linear-gradient(135deg, #163b68, #2a5298);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        /* =========================
+           START SCREEN
+        ========================= */
+
+        .start-screen {
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .start-screen h2 {
+            color: #163b68;
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        .start-screen > p {
+            line-height: 2;
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           STUDENT INFORMATION
+        ========================= */
+
+        .student-info {
+            max-width: 600px;
+            margin: 25px auto;
+            padding: 20px 25px;
+            background: #f7f9fc;
+            border: 1px solid #e0e5ec;
+            border-right: 5px solid #2a5298;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 8px;
+            border-bottom: 1px solid #e2e6eb;
+            color: #555;
+            font-size: 16px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row span {
+            color: #555;
+            font-weight: normal;
+        }
+
+        .info-row strong {
+            color: #163b68;
+            font-weight: bold;
+        }
+
+        /* =========================
+           NAME INPUT
+        ========================= */
+
+        .name-input {
+            width: 80%;
+            max-width: 450px;
+            padding: 14px 18px;
+            border: 2px solid #d7dfe8;
+            border-radius: 12px;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            margin: 15px auto 20px;
+            transition: 0.3s;
+        }
+
+        .name-input:focus {
+            border-color: #2a5298;
+            box-shadow: 0 0 8px rgba(42, 82, 152, 0.15);
+        }
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .btn {
+            border: none;
+            background: linear-gradient(135deg, #163b68, #2a5298);
+            color: white;
+            padding: 14px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(42, 82, 152, 0.3);
+        }
+
+        /* =========================
+           QUIZ SCREEN
+        ========================= */
+
+        .quiz-screen {
+            display: none;
+            padding: 30px;
+        }
+
+        .quiz-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #163b68;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .timer {
+            background: #f1f5f9;
+            padding: 8px 15px;
+            border-radius: 10px;
+            color: #d35400;
+            min-width: 75px;
+            text-align: center;
+        }
+
+        /* =========================
+           PROGRESS BAR
+        ========================= */
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: #e7edf3;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #2a5298, #4c82c3);
+            transition: width 0.4s ease;
+        }
+
+        /* =========================
+           QUESTION
+        ========================= */
+
+        .question {
+            background: #f7f9fc;
+            border-right: 5px solid #2a5298;
+            border-radius: 12px;
+            padding: 25px;
+            font-size: 21px;
+            font-weight: bold;
+            color: #163b68;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        /* =========================
+           ANSWERS
+        ========================= */
+
+        .answers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .answer {
+            background: white;
+            border: 2px solid #dce3eb;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            text-align: right;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            color: #333;
+        }
+
+        .answer:hover:not(:disabled) {
+            border-color: #2a5298;
+            background: #f4f8fc;
+            transform: translateY(-2px);
+        }
+
+        .answer.correct {
+            background: #dff5e5;
+            border-color: #28a745;
+            color: #146c2e;
+            font-weight: bold;
+        }
+
+        .answer.wrong {
+            background: #fde2e2;
+            border-color: #dc3545;
+            color: #a71d2a;
+            font-weight: bold;
+        }
+
+        .answer:disabled {
+            cursor: default;
+        }
+
+        /* =========================
+           NEXT BUTTON
+        ========================= */
+
+        .next-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .next-btn {
+            display: none;
+        }
+
+        /* =========================
+           RESULT SCREEN
+        ========================= */
+
+        .result-screen {
+            display: none;
+            padding: 45px 30px;
+            text-align: center;
+        }
+
+        .result-icon {
+            font-size: 65px;
+            margin-bottom: 15px;
+        }
+
+        .result-screen h2 {
+            color: #163b68;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        #resultMessage {
+            color: #555;
+            font-size: 17px;
+            margin-bottom: 20px;
+        }
+
+        .score {
+            font-size: 45px;
+            font-weight: bold;
+            color: #2a5298;
+            margin: 20px 0;
+        }
+
+        .score span {
+            color: #163b68;
+        }
+
+        .result-details {
+            max-width: 500px;
+            margin: 20px auto 30px;
+            background: #f7f9fc;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .result-details div {
+            padding: 12px;
+            border-bottom: 1px solid #e0e5ec;
+            font-size: 16px;
+        }
+
+        .result-details div:last-child {
+            border-bottom: none;
+        }
+
+        .result-details strong {
+            color: #163b68;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .game-container {
+                margin: 10px auto;
+                border-radius: 15px;
+            }
+
+            .header {
+                padding: 25px 15px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .header p {
+                font-size: 14px;
+            }
+
+            .start-screen,
+            .quiz-screen,
+            .result-screen {
+                padding: 25px 15px;
+            }
+
+            .start-screen h2 {
+                font-size: 22px;
+            }
+
+            .student-info {
+                padding: 15px;
+                margin: 20px auto;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+                font-size: 14px;
+            }
+
+            .name-input {
+                width: 95%;
+            }
+
+            .quiz-top {
+                font-size: 13px;
+            }
+
+            .question {
+                font-size: 18px;
+                padding: 18px;
+            }
+
+            .answers {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .answer {
+                font-size: 15px;
+            }
+
+            .score {
+                font-size: 38px;
+            }
+        }
+
+    </style>
 </head>
-
 
 <body>
 
-
 <div class="game-container">
 
+    <!-- =========================
+         HEADER
+    ========================== -->
 
-<!-- =========================
-     HEADER
-========================= -->
-
-<div class="header">
-
-    <h1>
-        💎 مسابقة المعادن والأنظمة البلورية
-    </h1>
-
-    <p>
-        اختبر معلوماتك في علم المعادن والبلورات
-    </p>
-
-</div>
+    <div class="header">
+        <h1>💎 مسابقة المعادن والأنظمة البلورية</h1>
+        <p>اختبر معلوماتك في علم المعادن والبلورات</p>
+    </div>
 
 
-<!-- =========================
-     START SCREEN
-========================= -->
+    <!-- =========================
+         START SCREEN
+    ========================== -->
 
-<div
-    class="start-screen"
-    id="startScreen"
->
+    <div class="start-screen" id="startScreen">
 
-    <h2>
-        🔬 أهلاً بك في المسابقة
-    </h2>
+        <h2>🔬 أهلاً بك في المسابقة</h2>
 
-    <p>
+        <p>
+            اختبر معلوماتك عن المعادن والخصائص والأنظمة البلورية.
+            <br>
+            لديك <strong>20 ثانية</strong> للإجابة عن كل سؤال.
+            <br>
+            عدد الأسئلة: <strong>20 سؤالاً</strong>
+        </p>
 
-        اختبر معلوماتك عن المعادن
-        والخصائص والأنظمة البلورية.
+
+        <!-- معلومات الطالبة -->
+
+        <div class="student-info">
+
+            <div class="info-row">
+                <span>👩‍🎓 عمل الطالبة:</span>
+                <strong>لميس سامر</strong>
+            </div>
+
+            <div class="info-row">
+                <span>🏫 المدرسة:</span>
+                <strong>الجزائر الأساسية</strong>
+            </div>
+
+            <div class="info-row">
+                <span>👩‍🏫 إشراف المعلمة:</span>
+                <strong>وفاء السيد</strong>
+            </div>
+
+            <div class="info-row">
+                <span>📚 الصف:</span>
+                <strong>التاسع أ</strong>
+            </div>
+
+        </div>
+
+
+        <!-- اسم اللاعب -->
+
+        <input
+            type="text"
+            id="playerName"
+            class="name-input"
+            placeholder="اكتب اسمك هنا"
+        >
 
         <br>
 
-        لديك
-        <strong>20 ثانية</strong>
-        للإجابة عن كل سؤال.
+        <button class="btn" onclick="startGame()">
+            🚀 ابدأ المسابقة
+        </button>
 
-        <br>
+    </div>
 
-        عدد الأسئلة:
-        <strong>20 سؤالاً</strong>
 
-    </p>
+    <!-- =========================
+         QUIZ SCREEN
+    ========================== -->
 
+    <div class="quiz-screen" id="quizScreen">
 
-    <input
+        <div class="quiz-top">
 
-        type="text"
+            <span id="questionNumber">
+                السؤال 1 من 20
+            </span>
 
-        id="playerName"
+            <span class="timer">
+                ⏱️ <span id="time">20</span>
+            </span>
 
-        class="name-input"
+            <span>
+                ⭐ <span id="score">0</span>
+            </span>
 
-        placeholder="اكتب اسمك هنا"
+        </div>
 
-    >
 
+        <div class="progress-container">
+            <div
+                class="progress-bar"
+                id="progressBar">
+            </div>
+        </div>
 
-    <br>
 
+        <div
+            class="question"
+            id="question">
+            السؤال سيظهر هنا
+        </div>
 
-    <button
 
-        class="btn"
+        <div
+            class="answers"
+            id="answers">
+        </div>
 
-        onclick="startGame()"
 
-    >
+        <div class="next-container">
 
-        🚀 ابدأ المسابقة
+            <button
+                class="btn next-btn"
+                id="nextBtn"
+                onclick="nextQuestion()">
 
-    </button>
+                السؤال التالي ➜
 
-</div>
+            </button>
 
+        </div>
 
-<!-- =========================
-     QUIZ SCREEN
-========================= -->
+    </div>
 
-<div
 
-    class="quiz-screen"
+    <!-- =========================
+         RESULT SCREEN
+    ========================== -->
 
-    id="quizScreen"
+    <div class="result-screen" id="resultScreen">
 
->
+        <div class="result-icon">
+            🏆
+        </div>
 
+        <h2>
+            انتهت المسابقة!
+        </h2>
 
-<div class="quiz-top">
+        <p id="resultMessage"></p>
 
-    <span id="questionNumber">
-        السؤال 1 من 20
-    </span>
 
+        <div class="score">
+            <span id="finalScore">0</span>
+            نقطة
+        </div>
 
-    <span class="timer">
 
-        ⏱️
+        <div class="result-details">
 
-        <span id="time">
-            20
-        </span>
+            <div>
+                👤 اللاعب:
+                <strong id="finalName"></strong>
+            </div>
 
-    </span>
+            <div>
+                ✅ الإجابات الصحيحة:
+                <strong id="correctAnswers">0</strong>
+            </div>
 
+            <div>
+                ❌ الإجابات الخاطئة:
+                <strong id="wrongAnswers">0</strong>
+            </div>
 
-    <span>
+            <div>
+                📊 النتيجة:
+                <strong id="percentage">0%</strong>
+            </div>
 
-        ⭐
+        </div>
 
-        <span id="score">
-            0
-        </span>
 
-    </span>
+        <button
+            class="btn"
+            onclick="restartGame()">
 
-</div>
+            🔄 إعادة المسابقة
 
+        </button>
 
-<!-- Progress -->
-
-<div class="progress-container">
-
-    <div
-
-        class="progress-bar"
-
-        id="progressBar"
-
-    ></div>
-
-</div>
-
-
-<!-- Question -->
-
-<div
-
-    class="question"
-
-    id="question"
-
->
-
-    السؤال سيظهر هنا
-
-</div>
-
-
-<!-- Answers -->
-
-<div
-
-    class="answers"
-
-    id="answers"
-
->
-
-</div>
-
-
-<!-- Next -->
-
-<div class="next-container">
-
-    <button
-
-        class="btn next-btn"
-
-        id="nextBtn"
-
-        onclick="nextQuestion()"
-
-    >
-
-        السؤال التالي ➜
-
-    </button>
-
-</div>
-
-
-</div>
-
-
-<!-- =========================
-     RESULT
-========================= -->
-
-<div
-
-    class="result-screen"
-
-    id="resultScreen"
-
->
-
-
-<div class="result-icon">
-    🏆
-</div>
-
-
-<h2>
-    انتهت المسابقة!
-</h2>
-
-
-<p id="resultMessage">
-</p>
-
-
-<div class="score">
-
-    <span id="finalScore">
-        0
-    </span>
-
-    نقطة
-
-</div>
-
-
-<div class="result-details">
-
-
-<div>
-
-    👤 اللاعب:
-
-    <strong id="finalName">
-    </strong>
-
-</div>
-
-
-<div>
-
-    ✅ الإجابات الصحيحة:
-
-    <strong id="correctAnswers">
-        0
-    </strong>
-
-</div>
-
-
-<div>
-
-    ❌ الإجابات الخاطئة:
-
-    <strong id="wrongAnswers">
-        0
-    </strong>
-
-</div>
-
-
-<div>
-
-    📊 النتيجة:
-
-    <strong id="percentage">
-        0%
-    </strong>
-
-</div>
-
-
-</div>
-
-
-<button
-
-    class="btn"
-
-    onclick="restartGame()"
-
->
-
-    🔄 إعادة المسابقة
-
-</button>
-
-
-</div>
-
+    </div>
 
 </div>
 
 
 <script>
 
-
-/* =====================================================
-   QUESTIONS
-   20 QUESTIONS
-   MINERALS & CRYSTAL SYSTEMS
-===================================================== */
-
-
-const questions = [
-
-
-/* 1 */
-
-{
-    question:
-        "ما هو التعريف الأدق للمعدن؟",
-
-    answers: [
-
-        "مادة عضوية سائلة",
-
-        "مادة صلبة طبيعية غير عضوية ذات تركيب كيميائي وبناء بلوري محدد",
-
-        "أي مادة يصنعها الإنسان",
-
-        "صخر يتكون من معدن واحد فقط"
-
-    ],
-
-    correct: 1
-},
-
-
-/* 2 */
-
-{
-    question:
-        "أي خاصية تعبّر عن مقاومة المعدن للخدش؟",
-
-    answers: [
-
-        "البريق",
-
-        "المخدش",
-
-        "الصلادة",
-
-        "الانفصام"
-
-    ],
-
-    correct: 2
-},
-
-
-/* 3 */
-
-{
-    question:
-        "ما هو المعدن الذي تبلغ صلادته 10 على مقياس موهس؟",
-
-    answers: [
-
-        "الكوارتز",
-
-        "الكالسيت",
-
-        "التلك",
-
-        "الألماس"
-
-    ],
-
-    correct: 3
-},
-
-
-/* 4 */
-
-{
-    question:
-        "ما هي صلادة الكوارتز على مقياس موهس؟",
-
-    answers: [
-
-        "5",
-
-        "6",
-
-        "7",
-
-        "8"
-
-    ],
-
-    correct: 2
-},
-
-
-/* 5 */
-
-{
-    question:
-        "أي معدن يُعد الألين على مقياس موهس؟",
-
-    answers: [
-
-        "التلك",
-
-        "الجبس",
-
-        "الكالسيت",
-
-        "الفلوريت"
-
-    ],
-
-    correct: 0
-},
-
-
-/* 6 */
-
-{
-    question:
-        "كم عدد الأنظمة البلورية الرئيسية؟",
-
-    answers: [
-
-        "4",
-
-        "5",
-
-        "6",
-
-        "7"
-
-    ],
-
-    correct: 3
-},
-
-
-/* 7 */
-
-{
-    question:
-        "أي نظام بلوري يتميز بثلاثة محاور متساوية ومتعامدة؟",
-
-    answers: [
-
-        "المكعبي",
-
-        "السداسي",
-
-        "المعيني القائم",
-
-        "أحادي الميل"
-
-    ],
-
-    correct: 0
-},
-
-
-/* 8 */
-
-{
-    question:
-        "أي نظام بلوري يتميز بثلاثة محاور متساوية الطول ولكنها ليست متعامدة؟",
-
-    answers: [
-
-        "المكعبي",
-
-        "ثلاثي الميل",
-
-        "ثلاثي الزوايا",
-
-        "المعيني القائم"
-
-    ],
-
-    correct: 2
-},
-
-
-/* 9 */
-
-{
-    question:
-        "أي نظام بلوري يحتوي على ثلاثة محاور متعامدة، محور واحد مختلف الطول؟",
-
-    answers: [
-
-        "المعيني القائم",
-
-        "الرباعي",
-
-        "المكعبي",
-
-        "السداسي"
-
-    ],
-
-    correct: 1
-},
-
-
-/* 10 */
-
-{
-    question:
-        "أي نظام بلوري يتميز بثلاثة محاور متعامدة وجميعها مختلفة الطول؟",
-
-    answers: [
-
-        "المعيني القائم",
-
-        "الرباعي",
-
-        "المكعبي",
-
-        "السداسي"
-
-    ],
-
-    correct: 0
-},
-
-
-/* 11 */
-
-{
-    question:
-        "أي نظام بلوري له محوران متساويان في الطول ومحور ثالث مختلف، مع زوايا قائمة؟",
-
-    answers: [
-
-        "الرباعي",
-
-        "أحادي الميل",
-
-        "ثلاثي الميل",
-
-        "المعيني القائم"
-
-    ],
-
-    correct: 0
-},
-
-
-/* 12 */
-
-{
-    question:
-        "أي نظام بلوري يتميز بأربعة محاور، ثلاثة منها متساوية في المستوى؟",
-
-    answers: [
-
-        "السداسي",
-
-        "المكعبي",
-
-        "الرباعي",
-
-        "أحادي الميل"
-
-    ],
-
-    correct: 0
-},
-
-
-/* 13 */
-
-{
-    question:
-        "أي نظام بلوري يُعد من الأنظمة ذات المحاور غير المتعامدة؟",
-
-    answers: [
-
-        "المكعبي",
-
-        "ثلاثي الميل",
-
-        "الرباعي",
-
-        "المعيني القائم"
-
-    ],
-
-    correct: 1
-},
-
-
-/* 14 */
-
-{
-    question:
-        "ما المعدن الذي يتكون أساساً من SiO₂؟",
-
-    answers: [
-
-        "الكالسيت",
-
-        "الهاليت",
-
-        "الكوارتز",
-
-        "الجبس"
-
-    ],
-
-    correct: 2
-},
-
-
-/* 15 */
-
-{
-    question:
-        "ما الصيغة الكيميائية للكالسيت؟",
-
-    answers: [
-
-        "CaCO₃",
-
-        "NaCl",
-
-        "SiO₂",
-
-        "CaSO₄·2H₂O"
-
-    ],
-
-    correct: 0
-},
-
-
-/* 16 */
-
-{
-    question:
-        "ما المعدن الذي يتكون أساساً من كلوريد الصوديوم NaCl؟",
-
-    answers: [
-
-        "الهاليت",
-
-        "الكالسيت",
-
-        "الفلوريت",
-
-        "المغنيتيت"
-
-    ],
-
-    correct: 0
-},
-
-
-/* 17 */
-
-{
-    question:
-        "ما الخاصية التي تصف طريقة انعكاس الضوء عن سطح المعدن؟",
-
-    answers: [
-
-        "المخدش",
-
-        "البريق",
-
-        "الصلادة",
-
-        "الكثافة"
-
-    ],
-
-    correct: 1
-},
-
-
-/* 18 */
-
-{
-    question:
-        "ما لون مسحوق المعدن الناتج عند حكه على لوح خزفي غير مزجج؟",
-
-    answers: [
-
-        "البريق",
-
-        "المخدش",
-
-        "الانفصام",
-
-        "الكثافة"
-
-    ],
-
-    correct: 1
-},
-
-
-/* 19 */
-
-{
-    question:
-        "ما المقصود بالانفصام في المعادن؟",
-
-    answers: [
-
-        "قدرة المعدن على مقاومة الخدش",
-
-        "انكسار المعدن عشوائياً",
-
-        "انقسام المعدن على مستويات محددة مرتبطة بالبناء البلوري",
-
-        "لون مسحوق المعدن"
-
-    ],
-
-    correct: 2
-},
-
-
-/* 20 */
-
-{
-    question:
-        "أي معدن يتميز بانفصام مكعبي واضح؟",
-
-    answers: [
-
-        "الكوارتز",
-
-        "الهاليت",
-
-        "الألماس",
-
-        "الكالسيت"
-
-    ],
-
-    correct: 1
-}
-
-
-];
-
-
-/* =====================================================
-   GAME VARIABLES
-===================================================== */
-
-
-let currentQuestion = 0;
-
-let score = 0;
-
-let correctCount = 0;
-
-let wrongCount = 0;
-
-let timeLeft = 20;
-
-let timer;
-
-let playerName = "";
-
-
-/* =====================================================
-   START GAME
-===================================================== */
-
-
-function startGame() {
-
-
-    playerName =
-        document
-        .getElementById("playerName")
-        .value
-        .trim();
-
-
-    if (playerName === "") {
-
-        playerName = "اللاعب";
-
-    }
-
-
-    currentQuestion = 0;
-
-    score = 0;
-
-    correctCount = 0;
-
-    wrongCount = 0;
-
-
-    document
-        .getElementById("startScreen")
-        .style.display = "none";
-
-
-    document
-        .getElementById("resultScreen")
-        .style.display = "none";
-
-
-    document
-        .getElementById("quizScreen")
-        .style.display = "block";
-
-
-    showQuestion();
-
-}
-
-
-/* =====================================================
-   SHOW QUESTION
-===================================================== */
-
-
-function showQuestion() {
-
-
-    clearInterval(timer);
-
-
-    timeLeft = 20;
-
-
-    document
-        .getElementById("time")
-        .textContent =
-        timeLeft;
-
-
-    const questionData =
-        questions[currentQuestion];
-
-
-    document
-        .getElementById("questionNumber")
-        .textContent =
-        `السؤال ${currentQuestion + 1} من ${questions.length}`;
-
-
-    document
-        .getElementById("question")
-        .textContent =
-        questionData.question;
-
-
-    document
-        .getElementById("score")
-        .textContent =
-        score;
-
-
-    /* Progress */
-
-    const progress =
-        (currentQuestion /
-        questions.length) * 100;
-
-
-    document
-        .getElementById("progressBar")
-        .style.width =
-        progress + "%";
-
-
-    /* Answers */
-
-    const answersContainer =
-        document
-        .getElementById("answers");
-
-
-    answersContainer.innerHTML = "";
-
-
-    questionData.answers.forEach(
-
-        (answer, index) => {
-
-
-            const button =
-                document
-                .createElement("button");
-
-
-            button.className =
-                "answer";
-
-
-            button.textContent =
-                answer;
-
-
-            button.onclick =
-                function () {
-
-                    selectAnswer(
-                        index,
-                        button
-                    );
-
-                };
-
-
-            answersContainer
-                .appendChild(button);
-
-        }
-
-    );
-
-
-    document
-        .getElementById("nextBtn")
-        .style.display =
-        "none";
-
-
-    startTimer();
-
-}
-
-
-/* =====================================================
-   TIMER
-===================================================== */
-
-
-function startTimer() {
-
-
-    timer = setInterval(
-
-        () => {
-
-
-            timeLeft--;
-
-
-            document
-                .getElementById("time")
-                .textContent =
-                timeLeft;
-
-
-            if (timeLeft <= 0) {
-
-
-                clearInterval(timer);
-
-
-                wrongCount++;
-
-
-                disableAnswers();
-
-
-                showCorrectAnswer();
-
-
-                document
-                    .getElementById("nextBtn")
-                    .style.display =
-                    "inline-block";
-
-            }
-
-
+    /* =========================
+       QUESTIONS
+    ========================== */
+
+    const questions = [
+
+        {
+            question: "ما هو المعدن؟",
+            answers: [
+                "مادة صناعية يصنعها الإنسان",
+                "مادة صلبة طبيعية غير عضوية ذات تركيب كيميائي وبنية بلورية محددة",
+                "مادة سائلة طبيعية",
+                "مادة عضوية فقط"
+            ],
+            correct: 1
         },
 
-        1000
+        {
+            question: "ما الخاصية التي تقيس مقاومة المعدن للخدش؟",
+            answers: [
+                "اللون",
+                "البريق",
+                "الصلادة",
+                "المخدش"
+            ],
+            correct: 2
+        },
 
-    );
+        {
+            question: "ما هو المعدن الذي تبلغ صلادته 10 على مقياس موهس؟",
+            answers: [
+                "الكوارتز",
+                "التلك",
+                "الألماس",
+                "الكالسيت"
+            ],
+            correct: 2
+        },
 
-}
+        {
+            question: "ما صلادة معدن الكوارتز على مقياس موهس؟",
+            answers: [
+                "5",
+                "6",
+                "7",
+                "8"
+            ],
+            correct: 2
+        },
+
+        {
+            question: "ما هو ألين معدن على مقياس موهس؟",
+            answers: [
+                "الألماس",
+                "التلك",
+                "الكوارتز",
+                "الفلسبار"
+            ],
+            correct: 1
+        },
+
+        {
+            question: "كم عدد الأنظمة البلورية الرئيسية؟",
+            answers: [
+                "5",
+                "6",
+                "7",
+                "8"
+            ],
+            correct: 2
+        },
+
+        {
+            question: "أي نظام بلوري يتميز بثلاثة محاور متساوية ومتعامدة؟",
+            answers: [
+                "المكعبي",
+                "السداسي",
+                "المعيني",
+                "أحادي الميل"
+            ],
+            correct: 0
+        },
+
+        {
+            question: "أي نظام بلوري يتميز بثلاثة محاور متساوية وغير متعامدة؟",
+            answers: [
+                "المكعبي",
+                "ثلاثي الزوايا",
+                "السداسي",
+                "المعيني"
+            ],
+            correct: 1
+        },
+
+        {
+            question: "أي نظام بلوري يتميز بثلاثة محاور متعامدة، اثنان منها متساويان والثالث مختلف؟",
+            answers: [
+                "المكعبي",
+                "الرباعي",
+                "المعيني",
+                "ثلاثي الميل"
+            ],
+            correct: 1
+        },
+
+        {
+            question: "أي نظام بلوري يتميز بثلاثة محاور متعامدة مختلفة الأطوال؟",
+            answers: [
+                "المعيني القائم",
+                "المكعبي",
+                "الرباعي",
+                "السداسي"
+            ],
+            correct: 0
+        },
+
+        {
+            question: "ما النظام البلوري الذي له محوران متساويان ومحور ثالث مختلف، وجميع الزوايا قائمة؟",
+            answers: [
+                "الرباعي",
+                "المعيني",
+                "أحادي الميل",
+                "ثلاثي الميل"
+            ],
+            correct: 0
+        },
+
+        {
+            question: "ما النظام البلوري الذي يحتوي على أربعة محاور، ثلاثة منها متساوية في المستوى؟",
+            answers: [
+                "المكعبي",
+                "السداسي",
+                "الرباعي",
+                "المعيني"
+            ],
+            correct: 1
+        },
+
+        {
+            question: "أي نظام بلوري يتميز بمحاور غير متعامدة جميعها؟",
+            answers: [
+                "ثلاثي الميل",
+                "المكعبي",
+                "الرباعي",
+                "السداسي"
+            ],
+            correct: 0
+        },
+
+        {
+            question: "ما المعدن الذي صيغته الكيميائية SiO₂؟",
+            answers: [
+                "الكالسيت",
+                "الهاليت",
+                "الكوارتز",
+                "التلك"
+            ],
+            correct: 2
+        },
+
+        {
+            question: "ما الصيغة الكيميائية لمعدن الكالسيت؟",
+            answers: [
+                "NaCl",
+                "CaCO₃",
+                "SiO₂",
+                "Fe₂O₃"
+            ],
+            correct: 1
+        },
+
+        {
+            question: "ما المعدن الذي صيغته الكيميائية NaCl؟",
+            answers: [
+                "الهاليت",
+                "الكالسيت",
+                "الكوارتز",
+                "الجبس"
+            ],
+            correct: 0
+        },
+
+        {
+            question: "ماذا يسمى انعكاس الضوء عن سطح المعدن؟",
+            answers: [
+                "المخدش",
+                "البريق",
+                "الانفصام",
+                "الصلادة"
+            ],
+            correct: 1
+        },
+
+        {
+            question: "ما لون مسحوق المعدن الناتج عن حكه على لوح خزفي غير مزجج؟",
+            answers: [
+                "البريق",
+                "الشفافية",
+                "المخدش",
+                "الانفصام"
+            ],
+            correct: 2
+        },
+
+        {
+            question: "ماذا يسمى انقسام المعدن على مستويات محددة مرتبطة ببنيته البلورية؟",
+            answers: [
+                "البريق",
+                "الانفصام",
+                "المخدش",
+                "اللون"
+            ],
+            correct: 1
+        },
+
+        {
+            question: "أي معدن يتميز بانفصام مكعبي؟",
+            answers: [
+                "الكوارتز",
+                "الهاليت",
+                "الألماس",
+                "الكالسيت"
+            ],
+            correct: 1
+        }
+
+    ];
 
 
-/* =====================================================
-   SELECT ANSWER
-===================================================== */
+    /* =========================
+       GAME VARIABLES
+    ========================== */
+
+    let currentQuestion = 0;
+
+    let score = 0;
+
+    let correctCount = 0;
+
+    let wrongCount = 0;
+
+    let timeLeft = 20;
+
+    let timer;
+
+    let playerName = "";
 
 
-function selectAnswer(
-    index,
-    button
-) {
+    /* =========================
+       START GAME
+    ========================== */
 
+    function startGame() {
 
-    clearInterval(timer);
+        playerName =
+            document.getElementById("playerName").value.trim();
 
+        if (playerName === "") {
 
-    const correct =
-        questions[currentQuestion]
-        .correct;
-
-
-    disableAnswers();
-
-
-    const buttons =
-        document
-        .querySelectorAll(".answer");
-
-
-    /* Correct */
-
-    if (index === correct) {
-
-
-        button
-            .classList
-            .add("correct");
-
-
-        button.textContent =
-            "✅ " +
-            questions[currentQuestion]
-            .answers[index];
-
-
-        score += 10;
-
-
-        correctCount++;
-
-    }
-
-
-    /* Wrong */
-
-    else {
-
-
-        button
-            .classList
-            .add("wrong");
-
-
-        button.textContent =
-            "❌ " +
-            questions[currentQuestion]
-            .answers[index];
-
-
-        wrongCount++;
-
-
-        /* Show correct answer */
-
-        buttons[correct]
-            .classList
-            .add("correct");
-
-
-        buttons[correct]
-            .textContent =
-            "✅ " +
-            questions[currentQuestion]
-            .answers[correct];
-
-    }
-
-
-    document
-        .getElementById("score")
-        .textContent =
-        score;
-
-
-    document
-        .getElementById("nextBtn")
-        .style.display =
-        "inline-block";
-
-}
-
-
-/* =====================================================
-   DISABLE ANSWERS
-===================================================== */
-
-
-function disableAnswers() {
-
-
-    const buttons =
-        document
-        .querySelectorAll(".answer");
-
-
-    buttons.forEach(
-
-        button => {
-
-            button
-                .classList
-                .add("disabled");
+            playerName = "الطالبة";
 
         }
 
-    );
+        currentQuestion = 0;
 
-}
+        score = 0;
 
+        correctCount = 0;
 
-/* =====================================================
-   SHOW CORRECT ANSWER
-===================================================== */
+        wrongCount = 0;
 
+        document.getElementById("score").textContent = score;
 
-function showCorrectAnswer() {
+        document.getElementById("startScreen").style.display = "none";
 
+        document.getElementById("resultScreen").style.display = "none";
 
-    const correct =
-        questions[currentQuestion]
-        .correct;
-
-
-    const buttons =
-        document
-        .querySelectorAll(".answer");
-
-
-    if (buttons[correct]) {
-
-
-        buttons[correct]
-            .classList
-            .add("correct");
-
-
-        buttons[correct]
-            .textContent =
-            "✅ " +
-            questions[currentQuestion]
-            .answers[correct];
-
-    }
-
-}
-
-
-/* =====================================================
-   NEXT QUESTION
-===================================================== */
-
-
-function nextQuestion() {
-
-
-    currentQuestion++;
-
-
-    if (
-        currentQuestion >=
-        questions.length
-    ) {
-
-
-        endGame();
-
-    }
-
-    else {
-
+        document.getElementById("quizScreen").style.display = "block";
 
         showQuestion();
 
     }
 
-}
+
+    /* =========================
+       SHOW QUESTION
+    ========================== */
+
+    function showQuestion() {
+
+        clearInterval(timer);
+
+        timeLeft = 20;
+
+        document.getElementById("time").textContent = timeLeft;
+
+        document.getElementById("questionNumber").textContent =
+            "السؤال " + (currentQuestion + 1) +
+            " من " + questions.length;
 
 
-/* =====================================================
-   END GAME
-===================================================== */
+        document.getElementById("question").textContent =
+            questions[currentQuestion].question;
 
 
-function endGame() {
+        const answersContainer =
+            document.getElementById("answers");
+
+        answersContainer.innerHTML = "";
 
 
-    clearInterval(timer);
+        questions[currentQuestion].answers.forEach(
+            (answer, index) => {
 
+                const button =
+                    document.createElement("button");
 
-    document
-        .getElementById("quizScreen")
-        .style.display =
-        "none";
+                button.className = "answer";
 
+                button.textContent =
+                    String.fromCharCode(0x0623 + index) +
+                    " - " +
+                    answer;
 
-    document
-        .getElementById("resultScreen")
-        .style.display =
-        "block";
+                button.onclick = function () {
 
+                    selectAnswer(index, button);
 
-    const total =
-        questions.length;
+                };
 
+                answersContainer.appendChild(button);
 
-    const percentage =
-        Math.round(
-            (correctCount / total) * 100
+            }
         );
 
 
-    document
-        .getElementById("finalName")
-        .textContent =
-        playerName;
+        document.getElementById("nextBtn").style.display = "none";
 
 
-    document
-        .getElementById("finalScore")
-        .textContent =
-        score;
+        const progress =
+            (currentQuestion / questions.length) * 100;
+
+        document.getElementById("progressBar").style.width =
+            progress + "%";
 
 
-    document
-        .getElementById("correctAnswers")
-        .textContent =
-        correctCount;
-
-
-    document
-        .getElementById("wrongAnswers")
-        .textContent =
-        wrongCount;
-
-
-    document
-        .getElementById("percentage")
-        .textContent =
-        percentage + "%";
-
-
-    let message;
-
-
-    if (percentage >= 90) {
-
-        message =
-            "🌟 ممتاز! لديك معرفة ممتازة بالمعادن والأنظمة البلورية.";
-
-    }
-
-    else if (percentage >= 70) {
-
-        message =
-            "👏 أحسنت! لديك معرفة جيدة جداً.";
-
-    }
-
-    else if (percentage >= 50) {
-
-        message =
-            "👍 نتيجة جيدة، راجع بعض المفاهيم وحاول مرة أخرى.";
-
-    }
-
-    else {
-
-        message =
-            "💪 حاول مرة أخرى وراجع أساسيات علم المعادن والبلورات.";
+        startTimer();
 
     }
 
 
-    document
-        .getElementById("resultMessage")
-        .textContent =
-        message;
+    /* =========================
+       TIMER
+    ========================== */
 
-}
+    function startTimer() {
 
+        timer = setInterval(function () {
 
-/* =====================================================
-   RESTART
-===================================================== */
+            timeLeft--;
 
-
-function restartGame() {
+            document.getElementById("time").textContent =
+                timeLeft;
 
 
-    clearInterval(timer);
+            if (timeLeft <= 0) {
+
+                clearInterval(timer);
+
+                wrongCount++;
+
+                disableAnswers();
+
+                showCorrectAnswer();
+
+                document.getElementById("nextBtn").style.display =
+                    "inline-block";
+
+            }
+
+        }, 1000);
+
+    }
 
 
-    document
-        .getElementById("resultScreen")
-        .style.display =
-        "none";
+    /* =========================
+       SELECT ANSWER
+    ========================== */
+
+    function selectAnswer(index, button) {
+
+        clearInterval(timer);
+
+        const correct =
+            questions[currentQuestion].correct;
+
+        disableAnswers();
+
+        const buttons =
+            document.querySelectorAll(".answer");
 
 
-    document
-        .getElementById("startScreen")
-        .style.display =
-        "block";
+        if (index === correct) {
+
+            button.classList.add("correct");
+
+            button.textContent =
+                "✅ " +
+                questions[currentQuestion].answers[index];
+
+            score += 10;
+
+            correctCount++;
+
+        }
+
+        else {
+
+            button.classList.add("wrong");
+
+            button.textContent =
+                "❌ " +
+                questions[currentQuestion].answers[index];
+
+            wrongCount++;
 
 
-    document
-        .getElementById("playerName")
-        .value =
-        "";
+            buttons[correct].classList.add("correct");
 
-}
+            buttons[correct].textContent =
+                "✅ " +
+                questions[currentQuestion].answers[correct];
+
+        }
+
+
+        document.getElementById("score").textContent =
+            score;
+
+        document.getElementById("nextBtn").style.display =
+            "inline-block";
+
+    }
+
+
+    /* =========================
+       DISABLE ANSWERS
+    ========================== */
+
+    function disableAnswers() {
+
+        const buttons =
+            document.querySelectorAll(".answer");
+
+        buttons.forEach(function (button) {
+
+            button.disabled = true;
+
+        });
+
+    }
+
+
+    /* =========================
+       SHOW CORRECT ANSWER
+    ========================== */
+
+    function showCorrectAnswer() {
+
+        const correct =
+            questions[currentQuestion].correct;
+
+        const buttons =
+            document.querySelectorAll(".answer");
+
+
+        if (buttons[correct]) {
+
+            buttons[correct].classList.add("correct");
+
+            buttons[correct].textContent =
+                "✅ " +
+                questions[currentQuestion].answers[correct];
+
+        }
+
+    }
+
+
+    /* =========================
+       NEXT QUESTION
+    ========================== */
+
+    function nextQuestion() {
+
+        clearInterval(timer);
+
+        currentQuestion++;
+
+
+        if (currentQuestion < questions.length) {
+
+            showQuestion();
+
+        }
+
+        else {
+
+            endGame();
+
+        }
+
+    }
+
+
+    /* =========================
+       END GAME
+    ========================== */
+
+    function endGame() {
+
+        clearInterval(timer);
+
+        document.getElementById("quizScreen").style.display =
+            "none";
+
+        document.getElementById("resultScreen").style.display =
+            "block";
+
+
+        document.getElementById("finalName").textContent =
+            playerName;
+
+
+        document.getElementById("finalScore").textContent =
+            score;
+
+
+        document.getElementById("correctAnswers").textContent =
+            correctCount;
+
+
+        document.getElementById("wrongAnswers").textContent =
+            wrongCount;
+
+
+        const percentage =
+            Math.round(
+                (correctCount / questions.length) * 100
+            );
+
+
+        document.getElementById("percentage").textContent =
+            percentage + "%";
+
+
+        let message = "";
+
+
+        if (percentage >= 90) {
+
+            message =
+                "🌟 ممتاز! لديك معرفة رائعة بالمعادن والأنظمة البلورية.";
+
+        }
+
+        else if (percentage >= 70) {
+
+            message =
+                "👏 أحسنت! نتيجة جيدة جدًا، واصل التعلم.";
+
+        }
+
+        else if (percentage >= 50) {
+
+            message =
+                "👍 نتيجة جيدة، حاول مراجعة المعلومات مرة أخرى.";
+
+        }
+
+        else {
+
+            message =
+                "📚 تحتاج إلى المزيد من المراجعة والتدريب. بالتوفيق!";
+
+        }
+
+
+        document.getElementById("resultMessage").textContent =
+            message;
+
+    }
+
+
+    /* =========================
+       RESTART GAME
+    ========================== */
+
+    function restartGame() {
+
+        clearInterval(timer);
+
+        currentQuestion = 0;
+
+        score = 0;
+
+        correctCount = 0;
+
+        wrongCount = 0;
+
+        timeLeft = 20;
+
+        playerName = "";
+
+
+        document.getElementById("playerName").value = "";
+
+        document.getElementById("score").textContent = "0";
+
+        document.getElementById("resultScreen").style.display =
+            "none";
+
+        document.getElementById("quizScreen").style.display =
+            "none";
+
+        document.getElementById("startScreen").style.display =
+            "block";
+
+    }
 
 </script>
 
 </body>
-
 </html>
-```
